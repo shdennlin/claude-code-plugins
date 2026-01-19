@@ -1,0 +1,17 @@
+{
+  "description": "Validates Mermaid diagrams at session end",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-mermaid.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

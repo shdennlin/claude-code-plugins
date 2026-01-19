@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp files
+tmp/
+temp/
+*.tmp
+
+# Build outputs
+dist/
+build/
+
+# Claude Code local files
+.claude/

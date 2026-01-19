@@ -1,0 +1,9 @@
+{
+  "name": "mermaid-validator",
+  "version": "1.0.0",
+  "description": "Validates Mermaid diagram syntax in Markdown files when session ends",
+  "author": {
+    "name": "shdennlin"
+  },
+  "keywords": ["mermaid", "validation", "diagrams", "markdown"]
+}
