@@ -6,6 +6,7 @@ allowed-tools:
   - Grep
   - Read
   - Edit
+  - Task
 ---
 
 # /mermaid-check - Mermaid Diagram Validation and Fix
@@ -43,11 +44,23 @@ git ls-files --others --exclude-standard | grep '\.md$'          # untracked
 
 If no git changes found, inform user: "No changed Markdown files to validate."
 
-### 2. Extract Mermaid Blocks
+### 2. Quick Check vs Deep Analysis
 
-For each file, find mermaid code blocks:
-- Look for ` ```mermaid ` ... ` ``` ` patterns
-- Record file path and line numbers for each block
+**For simple validation (1-2 files, quick check):**
+- Handle directly using Grep/Read/Edit tools
+- Pattern match for common errors
+
+**For complex operations (multiple files, --fix, --all):**
+- Delegate to the `mermaid-validator` agent using Task tool:
+
+```
+Task tool parameters:
+- subagent_type: "mermaid-validator"
+- description: "Validate mermaid diagrams"
+- prompt: "Validate and fix mermaid diagrams in: [files]. User requested: [--fix/--all flags]"
+```
+
+This allows the agent to handle the heavy lifting while the skill provides the user interface.
 
 ### 3. Validate Syntax
 
@@ -120,6 +133,7 @@ graph TD
 - **Grep**: Find files containing mermaid blocks
 - **Read**: Read file contents for validation
 - **Edit**: Apply fixes to mermaid diagrams
+- **Task**: Delegate to `mermaid-validator` agent for complex operations
 
 ## Examples
 
@@ -140,12 +154,14 @@ graph TD
 ```
 /mermaid-check --fix
 # Validates git changed files and offers to fix errors
+# Delegates to mermaid-validator agent for fix operations
 ```
 
 ### Check All Files
 ```
 /mermaid-check --all
-# Validates ALL .md files in project (use sparingly on large projects)
+# Validates ALL .md files in project
+# Delegates to mermaid-validator agent for efficiency
 ```
 
 ## Boundaries
@@ -155,6 +171,7 @@ graph TD
 - Propose and apply fixes for common syntax errors
 - Provide clear explanations of what's wrong
 - Default to git-changed files only (efficient)
+- Delegate to agent for complex multi-file operations
 
 **Will Not:**
 - Scan all files by default (use --all for that)
