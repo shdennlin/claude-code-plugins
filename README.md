@@ -18,7 +18,7 @@ That's it! The plugin is now installed and ready to use.
 
 | Plugin | Description | Type |
 |--------|-------------|------|
-| [mermaid-validator](./plugins/mermaid-validator) | Validates and fixes Mermaid diagram syntax in Markdown files | Skill + Agent |
+| [mermaid-validator](./plugins/mermaid-validator) | Validates and fixes Mermaid diagram syntax in Markdown files | Command + Agent |
 
 ## Commands
 
@@ -46,19 +46,22 @@ That's it! The plugin is now installed and ready to use.
 Validates and **fixes** Mermaid diagram syntax in Markdown files.
 
 **Components:**
-- 🔍 **Skill** (`/mermaid-check`): On-demand validation with fix capability
+- 🔍 **Command** (`/mermaid-validator:check`): On-demand validation with fix capability
 - 🤖 **Agent**: Proactive validation after editing `.md` files
 
 **Usage:**
 ```bash
 # Check mermaid diagrams
-/mermaid-check
+/mermaid-validator:check
 
 # Check and auto-fix
-/mermaid-check --fix
+/mermaid-validator:check --fix
 
 # Check specific file
-/mermaid-check README.md
+/mermaid-validator:check README.md
+
+# Check all files
+/mermaid-validator:check --all
 ```
 
 **Optional (for deep validation):**
@@ -80,10 +83,10 @@ Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for g
    plugins/your-plugin/
    ├── .claude-plugin/
    │   └── plugin.json
-   ├── skills/          # (optional)
-   ├── agents/          # (optional)
-   ├── hooks/           # (optional)
-   ├── commands/        # (optional)
+   ├── commands/        # (optional) - slash commands
+   ├── agents/          # (optional) - proactive agents
+   ├── hooks/           # (optional) - event hooks
+   ├── skills/          # (optional) - auto-discovery skills
    └── README.md
    ```
 3. Add your plugin to `.claude-plugin/marketplace.json`

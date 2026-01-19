@@ -4,7 +4,7 @@ A Claude Code plugin that validates and **fixes** Mermaid diagram syntax in Mark
 
 ## Features
 
-- 🔍 **Skill**: On-demand validation with `/mermaid-check` command
+- 🔍 **Command**: `/mermaid-validator:check` for on-demand validation
 - 🤖 **Agent**: Proactive validation after editing `.md` files
 - ✅ Validates syntax and identifies common errors
 - 🔧 **Auto-fix**: Can fix common syntax errors
@@ -22,22 +22,20 @@ A Claude Code plugin that validates and **fixes** Mermaid diagram syntax in Mark
 
 ## Usage
 
-### Skill: `/mermaid-check`
-
-Use the skill for on-demand validation:
+### Command: `/mermaid-validator:check`
 
 ```bash
 # Check git changed files (default)
-/mermaid-check
+/mermaid-validator:check
 
 # Check specific file
-/mermaid-check README.md
+/mermaid-validator:check README.md
 
 # Check and auto-fix errors
-/mermaid-check --fix
+/mermaid-validator:check --fix
 
 # Check all .md files in project
-/mermaid-check --all
+/mermaid-validator:check --all
 ```
 
 ### Agent: Proactive Validation
@@ -94,11 +92,10 @@ The plugin will use `mmdc` for deep validation when available.
 mermaid-validator/
 ├── .claude-plugin/
 │   └── plugin.json
-├── skills/
-│   └── mermaid-check/
-│       └── SKILL.md         # /mermaid-check command
+├── commands/
+│   └── check.md              # /mermaid-validator:check command
 ├── agents/
-│   └── mermaid-validator.md # Proactive agent
+│   └── mermaid-validator.md  # Proactive agent
 └── README.md
 ```
 
