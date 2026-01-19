@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "shdennlin-claude-plugins",
+  "description": "A collection of Claude Code plugins by shdennlin",
+  "repository": "https://github.com/shdennlin/claude-code-plugins",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "name": "mermaid-validator",
+      "version": "1.0.0",
+      "description": "Validates Mermaid diagram syntax in Markdown files when session ends",
+      "path": "plugins/mermaid-validator",
+      "keywords": ["mermaid", "validation", "diagrams", "markdown"],
+      "prerequisites": [
+        {
+          "name": "mermaid-cli",
+          "command": "mmdc",
+          "install": "npm install -g @mermaid-js/mermaid-cli"
+        }
+      ],
+      "hooks": ["Stop"],
+      "author": "shdennlin"
+    }
+  ]
+}
