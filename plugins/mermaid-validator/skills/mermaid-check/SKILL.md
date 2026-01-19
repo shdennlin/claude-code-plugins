@@ -1,3 +1,13 @@
+---
+name: mermaid-check
+description: Validate and fix Mermaid diagram syntax in Markdown files. Use when user asks to check mermaid diagrams, validate diagram syntax, fix mermaid errors, or mentions mermaid rendering issues.
+allowed-tools:
+  - Bash
+  - Grep
+  - Read
+  - Edit
+---
+
 # /mermaid-check - Mermaid Diagram Validation and Fix
 
 ## Triggers

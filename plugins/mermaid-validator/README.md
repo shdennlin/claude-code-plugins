@@ -95,7 +95,8 @@ mermaid-validator/
 ├── .claude-plugin/
 │   └── plugin.json
 ├── skills/
-│   └── mermaid-check.md    # /mermaid-check command
+│   └── mermaid-check/
+│       └── SKILL.md         # /mermaid-check command
 ├── agents/
 │   └── mermaid-validator.md # Proactive agent
 └── README.md
