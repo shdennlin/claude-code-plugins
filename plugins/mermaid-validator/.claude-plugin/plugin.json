@@ -1,7 +1,7 @@
 {
   "name": "mermaid-validator",
-  "version": "1.0.0",
-  "description": "Validates Mermaid diagram syntax in Markdown files when session ends",
+  "version": "1.1.0",
+  "description": "Validates Mermaid diagram syntax in git changed/staged Markdown files when session ends",
   "author": {
     "name": "shdennlin"
   },

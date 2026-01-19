@@ -1,13 +1,14 @@
 # Mermaid Validator Plugin
 
-A Claude Code plugin that automatically validates Mermaid diagram syntax in Markdown files when a session ends.
+A Claude Code plugin that automatically validates Mermaid diagram syntax in **git changed/staged** Markdown files when a session ends.
 
 ## Features
 
-- 🔍 Scans all Markdown files in your project for Mermaid diagrams
+- 🔍 Scans only **git changed/staged** Markdown files (not entire project)
 - ✅ Validates syntax using the official Mermaid CLI
 - 📍 Reports errors with file path and line numbers
 - 🚫 Non-blocking - reports errors but doesn't prevent session completion
+- ⚡ Fast - only validates files you've modified
 
 ## Prerequisites
 
@@ -25,29 +26,19 @@ mmdc --version
 
 ## Installation
 
-### Option 1: Load directly
-
 ```bash
-claude --plugin-dir /path/to/mermaid-validator
-```
+# Add marketplace
+/plugin marketplace add shdennlin/claude-code-plugins
 
-### Option 2: Add to your Claude Code settings
-
-Add to your `~/.claude/settings.json`:
-
-```json
-{
-  "plugins": [
-    "/path/to/mermaid-validator"
-  ]
-}
+# Install plugin
+/plugin install mermaid-validator@shdennlin-plugins
 ```
 
 ## How It Works
 
 This plugin uses a `Stop` hook that triggers when your Claude Code session ends. The hook:
 
-1. Finds all `.md` files in your project directory
+1. Detects git changed files (staged + modified + untracked `.md` files)
 2. Extracts Mermaid code blocks (` ```mermaid ` ... ` ``` `)
 3. Validates each block using `mmdc` (Mermaid CLI)
 4. Reports any syntax errors with file location and context
@@ -57,15 +48,17 @@ This plugin uses a `Stop` hook that triggers when your Claude Code session ends.
 ### All Valid
 
 ```
-🔍 Validating Mermaid diagrams...
+🔍 Validating Mermaid diagrams in changed files...
+   Files to check: 2
 ────────────────────────────────────────
-✅ All 5 Mermaid diagram(s) are valid
+✅ All 3 Mermaid diagram(s) are valid
 ```
 
 ### With Errors
 
 ```
-🔍 Validating Mermaid diagrams...
+🔍 Validating Mermaid diagrams in changed files...
+   Files to check: 2
 ✗ Error in docs/architecture.md:45
   Mermaid block #2:
     graph TD
@@ -74,35 +67,27 @@ This plugin uses a `Stop` hook that triggers when your Claude Code session ends.
   Error: Syntax error in graph
 
 ────────────────────────────────────────
-🔴 Found 1 Mermaid syntax error(s) in 5 diagram(s)
+🔴 Found 1 Mermaid syntax error(s) in 3 diagram(s)
 ```
 
-## Configuration
+### No Changes
 
-The plugin scans the entire project directory (`${CLAUDE_PROJECT_DIR}`). Files in `node_modules` and `.git` directories are automatically excluded.
-
-### Hook Configuration
-
-The hook is configured in `hooks/hooks.json`:
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate-mermaid.sh",
-            "timeout": 60
-          }
-        ]
-      }
-    ]
-  }
-}
 ```
+ℹ️  No changed Markdown files to validate
+```
+
+## What Files Are Validated
+
+The plugin validates `.md` files that are:
+
+| Status | Included |
+|--------|----------|
+| Staged (git add) | ✅ Yes |
+| Modified (unstaged) | ✅ Yes |
+| Untracked (new files) | ✅ Yes |
+| Unchanged | ❌ No |
+
+This means validation only runs on files you've worked on during the session.
 
 ## Troubleshooting
 
@@ -114,19 +99,21 @@ Install the Mermaid CLI:
 npm install -g @mermaid-js/mermaid-cli
 ```
 
+### "Not a git repository"
+
+This plugin requires a git repository. Initialize one with:
+
+```bash
+git init
+```
+
 ### Hook not running
 
-1. Ensure the plugin is loaded correctly:
-   ```bash
-   claude --debug --plugin-dir ./mermaid-validator
-   ```
+Use debug mode to see hook execution:
 
-2. Check that `hooks.json` is in the correct location
-
-3. Verify the script is executable:
-   ```bash
-   chmod +x scripts/validate-mermaid.sh
-   ```
+```bash
+claude --debug
+```
 
 ## License
 
