@@ -12,28 +12,58 @@
 
 ## Behavioral Flow
 
-1. **Discover**: Find Markdown files with mermaid code blocks
-   - If file specified: check only that file
-   - If `--all`: check all .md files in project
-   - Default: check git changed/staged .md files
+### 1. Discover Files
 
-2. **Extract**: Parse mermaid code blocks from files
-   - Identify ` ```mermaid ` ... ` ``` ` blocks
-   - Record file path and line numbers
+**IMPORTANT: By default, only check git changed/staged files, NOT all files.**
 
-3. **Validate**: Check each diagram for syntax errors
-   - Use pattern matching to identify common issues
-   - Check for: unclosed brackets, missing arrows, invalid syntax
+Use this logic to find files:
 
-4. **Report**: Show validation results
-   - List errors with file:line format
-   - Show the problematic code snippet
-   - Explain what's wrong
+```bash
+# Default: Get git changed/staged/untracked .md files
+git diff --name-only --cached --diff-filter=ACMR | grep '\.md$'  # staged
+git diff --name-only --diff-filter=ACMR | grep '\.md$'           # modified
+git ls-files --others --exclude-standard | grep '\.md$'          # untracked
+```
 
-5. **Fix** (if `--fix` or user requests):
-   - Propose corrections for common errors
-   - Use Edit tool to apply fixes
-   - Re-validate after fixing
+| Flag | Files to Check |
+|------|----------------|
+| (none) | Only git changed/staged/untracked `.md` files |
+| `[file]` | Only the specified file |
+| `--all` | All `.md` files in project |
+
+If no git changes found, inform user: "No changed Markdown files to validate."
+
+### 2. Extract Mermaid Blocks
+
+For each file, find mermaid code blocks:
+- Look for ` ```mermaid ` ... ` ``` ` patterns
+- Record file path and line numbers for each block
+
+### 3. Validate Syntax
+
+Check each diagram for common errors:
+- Unclosed brackets: `A[Start --> B`
+- Missing graph type: diagram without `graph`/`flowchart`/`sequenceDiagram` declaration
+- Invalid arrows: `->` instead of `-->`
+- Unquoted special characters
+
+If `mmdc` is available, use it for deep validation:
+```bash
+echo "diagram" > /tmp/test.mmd && mmdc -i /tmp/test.mmd -o /tmp/test.svg 2>&1
+```
+
+### 4. Report Results
+
+Show validation results:
+- List errors with `file:line` format
+- Show the problematic code snippet
+- Explain what's wrong
+
+### 5. Fix (if --fix or user requests)
+
+- Propose corrections for common errors
+- Use Edit tool to apply fixes
+- Re-validate after fixing
 
 ## Common Mermaid Errors and Fixes
 
@@ -76,17 +106,24 @@ graph TD
 
 ## Tool Coordination
 
+- **Bash**: Run git commands to find changed files, run mmdc for validation
 - **Grep**: Find files containing mermaid blocks
 - **Read**: Read file contents for validation
 - **Edit**: Apply fixes to mermaid diagrams
-- **Bash**: Run mmdc for deep validation (if installed)
 
 ## Examples
 
-### Check Current File
+### Check Git Changed Files (Default)
+```
+/mermaid-check
+# Only validates .md files that are staged, modified, or untracked in git
+# Does NOT scan entire project
+```
+
+### Check Specific File
 ```
 /mermaid-check README.md
-# Validates mermaid diagrams in README.md
+# Validates mermaid diagrams in README.md only
 ```
 
 ### Check and Fix
@@ -98,7 +135,7 @@ graph TD
 ### Check All Files
 ```
 /mermaid-check --all
-# Validates all .md files in project
+# Validates ALL .md files in project (use sparingly on large projects)
 ```
 
 ## Boundaries
@@ -107,8 +144,10 @@ graph TD
 - Find and validate mermaid syntax in Markdown files
 - Propose and apply fixes for common syntax errors
 - Provide clear explanations of what's wrong
+- Default to git-changed files only (efficient)
 
 **Will Not:**
+- Scan all files by default (use --all for that)
 - Fix semantic/logic errors in diagrams (only syntax)
 - Modify diagrams without user consent (unless --fix specified)
 - Validate non-mermaid diagram formats
