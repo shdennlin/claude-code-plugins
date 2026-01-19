@@ -1,0 +1,23 @@
+{
+  "name": "shdennlin-plugins",
+  "owner": {
+    "name": "shdennlin",
+    "email": "shawndennislin@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "mermaid-validator",
+      "source": "./plugins/mermaid-validator",
+      "description": "Validates Mermaid diagram syntax in Markdown files when session ends",
+      "version": "1.0.0",
+      "author": {
+        "name": "shdennlin"
+      },
+      "homepage": "https://github.com/shdennlin/claude-code-plugins",
+      "repository": "https://github.com/shdennlin/claude-code-plugins",
+      "license": "MIT",
+      "keywords": ["mermaid", "validation", "diagrams", "markdown", "hooks"],
+      "category": "validation"
+    }
+  ]
+}

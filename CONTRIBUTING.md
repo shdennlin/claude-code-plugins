@@ -60,7 +60,25 @@ mkdir -p plugins/your-plugin/scripts    # if using scripts
 }
 ```
 
-### 4. Update Root README
+### 4. Register in Marketplace
+
+Add your plugin to `.claude-plugin/marketplace.json`:
+
+```json
+{
+  "name": "your-plugin-name",
+  "source": "./plugins/your-plugin",
+  "description": "Brief description",
+  "version": "1.0.0",
+  "author": {
+    "name": "Your Name"
+  },
+  "keywords": ["relevant", "keywords"],
+  "category": "your-category"
+}
+```
+
+### 5. Update Root README
 
 Add your plugin to the catalog table in the root `README.md`.
 
@@ -102,13 +120,14 @@ claude --debug --plugin-dir ./plugins/your-plugin
 
 1. **Test** your plugin thoroughly
 2. **Validate** all JSON files
-3. **Update** the root README catalog
-4. **Commit** with a clear message:
+3. **Update** `.claude-plugin/marketplace.json`
+4. **Update** the root README catalog
+5. **Commit** with a clear message:
    ```bash
    git commit -m "Add your-plugin: brief description"
    ```
-5. **Push** to your fork
-6. **Create** a pull request with:
+6. **Push** to your fork
+7. **Create** a pull request with:
    - Description of the plugin
    - Prerequisites
    - Testing instructions
