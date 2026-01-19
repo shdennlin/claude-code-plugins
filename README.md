@@ -16,9 +16,9 @@ That's it! The plugin is now installed and ready to use.
 
 ## Plugin Catalog
 
-| Plugin | Description | Prerequisites |
-|--------|-------------|---------------|
-| [mermaid-validator](./plugins/mermaid-validator) | Validates Mermaid diagram syntax in Markdown files when session ends | `mmdc` ([Mermaid CLI](https://github.com/mermaid-js/mermaid-cli)) |
+| Plugin | Description | Type |
+|--------|-------------|------|
+| [mermaid-validator](./plugins/mermaid-validator) | Validates and fixes Mermaid diagram syntax in Markdown files | Skill + Agent |
 
 ## Commands
 
@@ -43,14 +43,25 @@ That's it! The plugin is now installed and ready to use.
 
 ### mermaid-validator
 
-Automatically validates Mermaid diagram syntax in all Markdown files when your Claude Code session ends.
+Validates and **fixes** Mermaid diagram syntax in Markdown files.
 
-**Features:**
-- Scans all `.md` files in your project
-- Reports syntax errors with file path and line numbers
-- Non-blocking (reports only, doesn't prevent session completion)
+**Components:**
+- 🔍 **Skill** (`/mermaid-check`): On-demand validation with fix capability
+- 🤖 **Agent**: Proactive validation after editing `.md` files
 
-**Prerequisites:**
+**Usage:**
+```bash
+# Check mermaid diagrams
+/mermaid-check
+
+# Check and auto-fix
+/mermaid-check --fix
+
+# Check specific file
+/mermaid-check README.md
+```
+
+**Optional (for deep validation):**
 ```bash
 npm install -g @mermaid-js/mermaid-cli
 ```
@@ -69,10 +80,10 @@ Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for g
    plugins/your-plugin/
    ├── .claude-plugin/
    │   └── plugin.json
+   ├── skills/          # (optional)
+   ├── agents/          # (optional)
    ├── hooks/           # (optional)
    ├── commands/        # (optional)
-   ├── agents/          # (optional)
-   ├── scripts/         # (optional)
    └── README.md
    ```
 3. Add your plugin to `.claude-plugin/marketplace.json`

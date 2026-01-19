@@ -8,15 +8,15 @@
     {
       "name": "mermaid-validator",
       "source": "./plugins/mermaid-validator",
-      "description": "Validates Mermaid diagram syntax in git changed/staged Markdown files when session ends",
-      "version": "1.1.0",
+      "description": "Validates and fixes Mermaid diagram syntax in Markdown files with skill and agent",
+      "version": "2.0.0",
       "author": {
         "name": "shdennlin"
       },
       "homepage": "https://github.com/shdennlin/claude-code-plugins",
       "repository": "https://github.com/shdennlin/claude-code-plugins",
       "license": "MIT",
-      "keywords": ["mermaid", "validation", "diagrams", "markdown", "hooks"],
+      "keywords": ["mermaid", "validation", "diagrams", "markdown", "fix", "agent", "skill"],
       "category": "validation"
     }
   ]

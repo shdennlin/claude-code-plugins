@@ -1,28 +1,14 @@
 # Mermaid Validator Plugin
 
-A Claude Code plugin that automatically validates Mermaid diagram syntax in **git changed/staged** Markdown files when a session ends.
+A Claude Code plugin that validates and **fixes** Mermaid diagram syntax in Markdown files.
 
 ## Features
 
-- 🔍 Scans only **git changed/staged** Markdown files (not entire project)
-- ✅ Validates syntax using the official Mermaid CLI
+- 🔍 **Skill**: On-demand validation with `/mermaid-check` command
+- 🤖 **Agent**: Proactive validation after editing `.md` files
+- ✅ Validates syntax and identifies common errors
+- 🔧 **Auto-fix**: Can fix common syntax errors
 - 📍 Reports errors with file path and line numbers
-- 🚫 Non-blocking - reports errors but doesn't prevent session completion
-- ⚡ Fast - only validates files you've modified
-
-## Prerequisites
-
-You need to have the Mermaid CLI installed:
-
-```bash
-npm install -g @mermaid-js/mermaid-cli
-```
-
-Verify installation:
-
-```bash
-mmdc --version
-```
 
 ## Installation
 
@@ -34,85 +20,85 @@ mmdc --version
 /plugin install mermaid-validator@shdennlin-plugins
 ```
 
-## How It Works
+## Usage
 
-This plugin uses a `Stop` hook that triggers when your Claude Code session ends. The hook:
+### Skill: `/mermaid-check`
 
-1. Detects git changed files (staged + modified + untracked `.md` files)
-2. Extracts Mermaid code blocks (` ```mermaid ` ... ` ``` `)
-3. Validates each block using `mmdc` (Mermaid CLI)
-4. Reports any syntax errors with file location and context
+Use the skill for on-demand validation:
 
-## Example Output
+```bash
+# Check git changed files (default)
+/mermaid-check
 
-### All Valid
+# Check specific file
+/mermaid-check README.md
 
-```
-🔍 Validating Mermaid diagrams in changed files...
-   Files to check: 2
-────────────────────────────────────────
-✅ All 3 Mermaid diagram(s) are valid
-```
+# Check and auto-fix errors
+/mermaid-check --fix
 
-### With Errors
-
-```
-🔍 Validating Mermaid diagrams in changed files...
-   Files to check: 2
-✗ Error in docs/architecture.md:45
-  Mermaid block #2:
-    graph TD
-        A[Start --> B[End]
-    ...
-  Error: Syntax error in graph
-
-────────────────────────────────────────
-🔴 Found 1 Mermaid syntax error(s) in 3 diagram(s)
+# Check all .md files in project
+/mermaid-check --all
 ```
 
-### No Changes
+### Agent: Proactive Validation
+
+The agent automatically activates when you:
+- Edit a Markdown file with mermaid diagrams
+- Add a new flowchart or diagram
+- Mention mermaid rendering issues
+
+**Examples that trigger the agent:**
+- "I just updated the architecture diagram in docs/architecture.md"
+- "Added a new flowchart to README.md"
+- "The mermaid diagram isn't rendering correctly"
+
+## What It Validates
+
+### Common Errors Detected
+
+| Error | Example | Fix |
+|-------|---------|-----|
+| Unclosed bracket | `A[Start --> B` | `A[Start] --> B` |
+| Missing graph type | `A --> B` (no declaration) | Add `graph TD` |
+| Invalid arrow | `A -> B` | `A --> B` |
+| Unquoted special chars | `A[Hello!]` | `A["Hello!"]` |
+
+### Example Output
 
 ```
-ℹ️  No changed Markdown files to validate
+📊 Mermaid Validation Results
+
+❌ Error in docs/flow.md:15
+   graph TD
+       A[Start --> B[End]
+
+   Problem: Unclosed bracket in node A
+   Fix: A[Start] --> B[End]
+
+   Would you like me to fix this?
 ```
 
-## What Files Are Validated
+## Optional: Deep Validation with mmdc
 
-The plugin validates `.md` files that are:
-
-| Status | Included |
-|--------|----------|
-| Staged (git add) | ✅ Yes |
-| Modified (unstaged) | ✅ Yes |
-| Untracked (new files) | ✅ Yes |
-| Unchanged | ❌ No |
-
-This means validation only runs on files you've worked on during the session.
-
-## Troubleshooting
-
-### "Mermaid CLI (mmdc) not found"
-
-Install the Mermaid CLI:
+For more thorough validation, install the Mermaid CLI:
 
 ```bash
 npm install -g @mermaid-js/mermaid-cli
 ```
 
-### "Not a git repository"
+The plugin will use `mmdc` for deep validation when available.
 
-This plugin requires a git repository. Initialize one with:
+## Plugin Structure
 
-```bash
-git init
 ```
-
-### Hook not running
-
-Use debug mode to see hook execution:
-
-```bash
-claude --debug
+mermaid-validator/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── mermaid-check.md    # /mermaid-check command
+├── agents/
+│   └── mermaid-validator.md # Proactive agent
+└── README.md
 ```
 
 ## License
