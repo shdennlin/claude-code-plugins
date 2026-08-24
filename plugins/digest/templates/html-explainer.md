@@ -31,8 +31,8 @@ Shared by `digest -e html` and `/digest:explain`. Big visuals and few words up t
 </html>
 ```
 
-- One `<main>` column, `max-width: 46rem; margin: 0 auto; padding: 1.5rem;`.
-- Wide content (SVG, tables) sits in a wrapper with `overflow-x: auto` — the body never scrolls horizontally.
+- Two-tier width: `<main>` at `max-width: 72rem; margin: 0 auto; padding: 1.5rem;`, prose sections capped at a readable measure (`max-width: 46rem; margin-inline: auto;`), while **visual sections break out** — diagrams, file maps, and wide tables use the full main width (`.wide { max-width: 60rem; margin-inline: auto; }`). Prose stays readable; visuals get room.
+- Wide content still sits in a wrapper with `overflow-x: auto` — the body never scrolls horizontally on narrow windows.
 
 ## 3. CSS Tokens (theme via custom properties only)
 
@@ -124,6 +124,24 @@ summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; }
 details .body { padding: 0 1rem 1rem; }
 ```
 
+**Expand/collapse-all control** — place one small button above the first `<details>`. Inline JS is allowed (the ban is on external *requests*, not scripting):
+
+```html
+<div class="ctl"><button id="xall">Expand all</button></div>
+<script>
+(function(){var b=document.getElementById('xall');b.addEventListener('click',function(){
+  var d=document.querySelectorAll('details'),open=[].some.call(d,function(x){return!x.open});
+  d.forEach(function(x){x.open=open});b.textContent=open?'Collapse all':'Expand all';});})();
+</script>
+```
+
+```css
+.ctl { text-align: right; margin: .75rem 0 -.25rem; }
+.ctl button { background: var(--card); color: var(--muted); border: 1px solid var(--border);
+  border-radius: 999px; padding: .25rem .8rem; font: inherit; font-size: .8rem; cursor: pointer; }
+.ctl button:hover { color: var(--fg); border-color: var(--accent); }
+```
+
 Digest deep sections: code walkthrough, design decisions, breaking changes & migration, risks & recommendations, questions for author. Explain deep section: evidence (commands run, key commits with short hashes, code excerpts).
 
 ## 8. QA Checklist (verify before finishing)
@@ -133,3 +151,4 @@ Digest deep sections: code walkthrough, design decisions, breaking changes & mig
 - All `<details>` default collapsed; page reads coherently without expanding any
 - SVGs scale on a narrow window; body never scrolls horizontally
 - Hero card answers "what and how risky" without scrolling
+- Expand-all button toggles every `<details>`; print/no-JS still degrades to native per-section toggles
