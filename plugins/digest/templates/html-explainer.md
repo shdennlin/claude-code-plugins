@@ -31,8 +31,9 @@ Shared by `digest -e html` and `/digest:explain`. Big visuals and few words up t
 </html>
 ```
 
-- Two-tier width: `<main>` at `max-width: 72rem; margin: 0 auto; padding: 1.5rem;`, prose sections capped at a readable measure (`max-width: 46rem; margin-inline: auto;`), while **visual sections break out** — diagrams, file maps, and wide tables use the full main width (`.wide { max-width: 60rem; margin-inline: auto; }`). Prose stays readable; visuals get room.
-- Wide content still sits in a wrapper with `overflow-x: auto` — the body never scrolls horizontally on narrow windows.
+- **One flush column**: `<main>` at `max-width: 52rem; margin: 0 auto; padding: 2.5rem 1.5rem;` and every child aligned to the same left edge. Never mix per-section max-widths — misaligned left edges read as broken. Long prose paragraphs may cap themselves at `max-width: 40rem` (still flush left, not centered).
+- Each section = a small label line + its content, both flush. Label style: mono uppercase eyebrow (`font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; color: var(--muted)`) with a `▍` tick in `--accent` before it — a nod to the diff gutter.
+- Wide content sits in a wrapper with `overflow-x: auto` — the body never scrolls horizontally on narrow windows.
 
 ## 3. CSS Tokens (theme via custom properties only)
 
@@ -62,7 +63,8 @@ The first thing on the page. One `<header class="hero">` card (`background: var(
 - Change-type icon (emoji, large: `font-size: 2rem`) or, for explain, a topic emoji
 - **Risk light**: a colored dot `●` using `--add` / `--warn` / `--del` + the risk word
 - **Stat chips**: small rounded spans (`border: 1px solid var(--border); border-radius: 999px; padding: .15rem .6rem;`) — e.g. `12 files`, `8 functions`, `3 modules`
-- **One-line summary** in large type (`font-size: 1.25rem; font-weight: 600`)
+- **One-line summary** as the page's display type (`font-size: clamp(1.45rem, 3.4vw, 2.05rem); font-weight: 800; letter-spacing: -.02em`)
+- **Diffstat strip** (digest): render the stats as a real `git diff --stat` tail line in mono — `13 files changed, 735 insertions(+), 137 deletions(−)` — with `(+)` in `--add` and `(−)` in `--del`, in a `--card` strip with a 3px `--accent` left border. Subject-native and more memorable than generic stat chips.
 
 ## 5. File Map with +/- Bars
 
@@ -95,7 +97,9 @@ All diagrams are inline `<svg>` using token colors (`fill="var(--card)" stroke="
   ```
 - Node = `<rect rx="8">` + centered `<text>` (`text-anchor="middle"`, `font-size="13"`). Affected/highlighted node: `stroke="var(--accent)" stroke-width="2"`, others `stroke="var(--border)"`.
 - Edge = `<line>` or `<path>` with `stroke="var(--muted)" marker-end="url(#arr)"`.
-- Give each svg a `viewBox` and `width="100%"` with a sensible `max-width`; never fixed pixel width.
+- **Size to fill**: `svg { display: block; width: 100%; height: auto; }` with a `viewBox` cropped tight to the drawing (no dead margins) and drawn to span the full viewBox width — a small diagram floating in a large panel reads as broken. No fixed pixel widths, no `max-width` smaller than the column.
+- **Minimum legibility**: node text ≥ 13px (14 for primary labels) in viewBox units, stroke-width 1.5–2, node height ≥ 42. Fewer, bigger nodes beat many small ones.
+- Section labels that describe the whole diagram belong in the HTML label line, not inside the svg; small in-svg annotations use the mono face at 11px in `--muted`.
 
 **Layer diagram** (digest): horizontal row of boxes `[API] → [Middleware] → [Service] → [DB]`; affected layers highlighted.
 
