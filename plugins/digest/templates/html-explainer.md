@@ -128,7 +128,7 @@ Digest deep sections: code walkthrough, design decisions, breaking changes & mig
 
 ## 8. QA Checklist (verify before finishing)
 
-- `grep -Ei 'https?://|<script src|<link |@import|url\(' file.html` → no hits (data: URIs exempt)
+- `grep -Ei 'https?://|<script src|<link |@import|url\([^#]' file.html` → no hits (SVG fragment refs `url(#…)` and data: URIs exempt)
 - Legible in both light and dark (`prefers-color-scheme`) — every color comes from a token
 - All `<details>` default collapsed; page reads coherently without expanding any
 - SVGs scale on a narrow window; body never scrolls horizontally
