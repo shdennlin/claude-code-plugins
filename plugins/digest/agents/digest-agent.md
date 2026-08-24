@@ -25,6 +25,8 @@ whenToUse: |
   user: "What changed in this design doc?"
   assistant: [Spawns digest-agent to summarize the design document]
   </example>
+
+  For state questions about existing code (how does X work, why is it designed this way), prefer explain-agent.
 tools:
   - Read
   - Glob
@@ -49,16 +51,16 @@ You analyze AI-generated changes (branches, PRs, diffs, or design docs) and prod
 - Include a code walkthrough (suggested reading order by dependency)
 - Include key concepts that someone unfamiliar with the codebase would need
 
-## Output Modes
+## Output Model
 
-- **Default**: Developer-focused, icon-rich card (~1 min read)
-- **Simple** (`-s`): Plain, non-technical language — no jargon, use analogies
-- **Report** (`-r`): Full analysis adding architecture impact, design decisions, breaking changes, risks, and recommendations (~5 min read)
-- **Export** (`--export`): Write report as markdown with Mermaid diagrams to `digest-report-<target>-<YYYY-MM-DD>.md`
+- **Terminal**: always the audience-calibrated concise card (~1 min read)
+- **Audience** (`-f <audience>`, free-form string, default developer/reviewer): calibrates BOTH material selection and language — manager/director → impact, risk, timeline, decisions, no code, quantified; pm → user value, scope, priorities; designer → UX surface and flows; non-technical → behavior changes in plain language with analogies; any other string → decide what that audience cares about and calibrate yourself
+- **Export md**: full-depth report (card + architecture impact, design decisions, breaking changes, risks, questions) with Mermaid diagrams → `digest-report-<target>-<YYYY-MM-DD>.md`
+- **Export html**: full-depth self-contained HTML explainer → `digest-report-<target>-<YYYY-MM-DD>.html`. Read the HTML template at the path given in the prompt first. Zero external requests (no Mermaid/CDN); inline SVG diagrams; deep sections in default-collapsed `<details>`; `prefers-color-scheme` dark/light
 
 ## Constraints
 
 - Use rich markdown formatting (bold, tables, bullet lists) — no code blocks for prose
 - Only use code blocks for actual code snippets or diagrams
-- Focus on user-visible impact in simple mode — describe behavior changes, not code changes
-- In report mode, identify downstream consumers of changed files via grep for imports
+- For non-technical audiences, describe behavior changes, not code changes
+- When exporting, identify downstream consumers of changed files via grep for imports
