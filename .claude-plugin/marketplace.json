@@ -16,7 +16,15 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["mermaid", "validation", "diagrams", "markdown", "fix", "agent", "skill"],
+      "keywords": [
+        "mermaid",
+        "validation",
+        "diagrams",
+        "markdown",
+        "fix",
+        "agent",
+        "skill"
+      ],
       "category": "validation"
     },
     {
@@ -30,7 +38,16 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["git", "merge", "commit", "status", "sync", "submodules", "workflow", "conventional-commits"],
+      "keywords": [
+        "git",
+        "merge",
+        "commit",
+        "status",
+        "sync",
+        "submodules",
+        "workflow",
+        "conventional-commits"
+      ],
       "category": "workflow"
     },
     {
@@ -44,21 +61,48 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["review", "spec", "code-review", "handoff", "agent-loop", "openspec", "spectra", "init", "iterative-fix", "parallel-review", "orchestrator", "code-explorer", "dual-engine", "codex", "workflow"],
+      "keywords": [
+        "review",
+        "spec",
+        "code-review",
+        "handoff",
+        "agent-loop",
+        "openspec",
+        "spectra",
+        "init",
+        "iterative-fix",
+        "parallel-review",
+        "orchestrator",
+        "code-explorer",
+        "dual-engine",
+        "codex",
+        "workflow"
+      ],
       "category": "review"
     },
     {
       "name": "digest",
       "source": "./plugins/digest",
-      "description": "Summarize AI-generated branches, PRs, diffs, and design docs into icon-rich structured cards, plus multi-project weekly recall digests",
-      "version": "1.4.1",
+      "description": "Summarize AI-generated branches, PRs, and diffs into icon-rich cards, explain code state with git archaeology as self-contained HTML explainers, plus multi-project weekly recall digests",
+      "version": "2.0.0",
       "author": {
         "name": "shdennlin"
       },
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["digest", "summary", "explain", "changelog", "diff", "PR", "weekly", "recall", "git-log"],
+      "keywords": [
+        "digest",
+        "summary",
+        "explain",
+        "changelog",
+        "diff",
+        "PR",
+        "weekly",
+        "recall",
+        "git-log",
+        "html"
+      ],
       "category": "analysis"
     },
     {
@@ -72,7 +116,13 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["ralph-loop", "loop", "iteration", "self-referential", "session-isolation"],
+      "keywords": [
+        "ralph-loop",
+        "loop",
+        "iteration",
+        "self-referential",
+        "session-isolation"
+      ],
       "category": "workflow"
     },
     {
@@ -86,7 +136,18 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["journal", "logging", "notes", "obsidian", "zettelkasten", "reflection", "session-log", "learning-log", "harvest", "distillation"],
+      "keywords": [
+        "journal",
+        "logging",
+        "notes",
+        "obsidian",
+        "zettelkasten",
+        "reflection",
+        "session-log",
+        "learning-log",
+        "harvest",
+        "distillation"
+      ],
       "category": "workflow"
     },
     {
@@ -100,7 +161,14 @@
       "homepage": "https://github.com/shdennlin/agent-plugins",
       "repository": "https://github.com/shdennlin/agent-plugins",
       "license": "MIT",
-      "keywords": ["framing", "design", "discussion", "decision", "convergence", "brainstorming"],
+      "keywords": [
+        "framing",
+        "design",
+        "discussion",
+        "decision",
+        "convergence",
+        "brainstorming"
+      ],
       "category": "workflow"
     }
   ]

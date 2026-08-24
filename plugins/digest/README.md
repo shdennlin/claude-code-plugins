@@ -1,6 +1,6 @@
 # Digest Plugin
 
-Summarize AI-generated branches, PRs, diffs, and design docs into icon-rich structured cards.
+Summarize AI-generated branches, PRs, diffs, and design docs into icon-rich structured cards — and explain existing code (what / how / why / where's the bug) as self-contained HTML explainers.
 
 ## Problem
 
@@ -10,7 +10,8 @@ AI agents generate specs, branches, PRs, and docs — but understanding what the
 
 | Command | Purpose |
 |---------|---------|
-| `/digest:digest [target] [-s] [-r] [--export]` | Summarize changes into a structured card |
+| `/digest:digest [target] [-f <audience>] [-e [md\|html]]` | Summarize changes (delta) into a structured card, with optional full-depth export |
+| `/digest:explain [path\|symbol\|question] [-f <audience>]` | Explain code state (what/how/why/bug source) as a self-contained HTML explainer |
 | `/digest:release [from] [to] [--dev] [--user] [--write] [--out <file>]` | Generate release notes from commit ranges |
 | `/digest:weekly [date-range] [--projects <list>] [--brief] [--detail] [--write]` | Synthesize multi-project recall digest over a time window |
 
@@ -31,17 +32,38 @@ AI agents generate specs, branches, PRs, and docs — but understanding what the
 # Summarize a design doc
 /digest:digest docs/plans/auth.md
 
-# Plain-language summary (easy to understand for everyone)
-/digest:digest --simple
-/digest:digest feat/auth -s
+# Tailor for an audience (free-form: manager, pm, designer, non-technical, ...)
+/digest:digest -f manager
+/digest:digest feat/auth -f non-technical
 
-# Full report with architecture, design decisions, risks, recommendations
-/digest:digest --report
-/digest:digest feat/auth -r
+# Full-depth markdown report with Mermaid diagrams
+/digest:digest -e md
 
-# Export report as markdown file with Mermaid diagrams (requires -r)
-/digest:digest -r --export
+# Self-contained HTML explainer (shareable single file)
+/digest:digest -e html
+/digest:digest feat/auth -e html -f pm
 ```
+
+### Explain
+
+```bash
+# After an investigation in the current session — visualize the finding
+/digest:explain
+
+# How does this module work?
+/digest:explain src/auth/
+
+# What is this function's role in the whole flow?
+/digest:explain handleRetry
+
+# Why was it designed this way? (git archaeology)
+/digest:explain "why does the queue use at-least-once delivery?"
+
+# Onboarding tour for a new teammate
+/digest:explain src/ -f "new teammate"
+```
+
+`digest` explains **what changed** (delta); `explain` explains **the current state** — no arguments uses the current conversation's findings, a path/symbol/question dispatches an investigation with git archaeology (`git log --follow`, `blame`, commit messages, PR discussions).
 
 ### Release
 
@@ -148,7 +170,9 @@ Output is **synthesized** (themed clusters), not enumerated (commit dumps). Sect
 🚨 Breaking: None
 ```
 
-### Simple (--simple)
+### Audience (`-f`)
+
+Free-form audience string calibrates both material and language. `-f manager` leads with impact, risk, timeline, and decisions (no code); `-f pm` with user value and scope; `-f designer` with UX surface. Example with `-f non-technical`:
 
 ```
 ✨ Feature | 📁 3 files changed | ⚠️ Risk: Low
@@ -166,18 +190,20 @@ Output is **synthesized** (themed clusters), not enumerated (commit dumps). Sect
 🚨 Breaking changes: None
 ```
 
-### Report (--report)
+### Export (`-e md`)
 
-Adds (~5 min read):
+Writes the full-depth report to `digest-report-<target>-<YYYY-MM-DD>.md` with Mermaid diagrams. Adds (~5 min read):
 - Architecture impact with module dependencies and blast radius
 - Design decisions with trade-off analysis
 - Breaking changes and migration steps
 - Risk assessment and recommendations
 - Questions for the author
 
-### Export (--export)
+### HTML Explainer (`-e html` / explain)
 
-Requires `--report`. Writes the full report to a markdown file with Mermaid diagrams instead of ASCII art. File is named `digest-report-<target>-<YYYY-MM-DD>.md`.
+A single self-contained HTML file — zero external requests, inline SVG diagrams (layer/dependency, call-chain, why-chain, evolution timeline), light/dark via `prefers-color-scheme`, deep sections in collapsible `<details>`. Opens from `file://` with no network. Files: `digest-report-<target>-<date>.html` and `explain-<slug>-<date>.html`.
+
+Terminal output is always the concise card; exports are always full depth. Removed flags: `-r` → use `-e md`/`-e html`; `-s` → use `-f non-technical`.
 
 ## Change Type Icons
 
@@ -207,5 +233,6 @@ See [`.codex/INSTALL.md`](.codex/INSTALL.md) for Codex-native installation.
 | Agent | Model | Purpose |
 |-------|-------|---------|
 | digest-agent | sonnet | Analyzes diffs, commits, PRs, and docs to produce structured summaries |
+| explain-agent | sonnet | Reads code and git history to explain what/how/why, producing HTML explainers |
 | release-agent | sonnet | Gathers commits between tags and produces developer/user release notes |
 | weekly-agent | sonnet | Scans multiple project repos over a time window and synthesizes themed recall notes |

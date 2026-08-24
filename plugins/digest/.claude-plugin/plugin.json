@@ -1,9 +1,20 @@
 {
   "name": "digest",
-  "version": "1.4.1",
-  "description": "Summarize AI-generated branches, PRs, diffs, and design docs into icon-rich structured cards, plus multi-project weekly recall digests",
+  "version": "2.0.0",
+  "description": "Summarize AI-generated branches, PRs, and diffs into icon-rich cards, explain code state with git archaeology as self-contained HTML explainers, plus multi-project weekly recall digests",
   "author": {
     "name": "shdennlin"
   },
-  "keywords": ["digest", "summary", "explain", "changelog", "diff", "PR", "weekly", "recall", "git-log"]
+  "keywords": [
+    "digest",
+    "summary",
+    "explain",
+    "changelog",
+    "diff",
+    "PR",
+    "weekly",
+    "recall",
+    "git-log",
+    "html"
+  ]
 }
